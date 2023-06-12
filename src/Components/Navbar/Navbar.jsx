@@ -39,7 +39,6 @@ function Navbar({navBarHeight}) {
     setAnchorElUser(null);
   };
 
-  console.log(navBarHeight)
   return (
     <>
     <AppBar position='sticky' sx= {
