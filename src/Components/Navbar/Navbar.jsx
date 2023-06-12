@@ -20,7 +20,7 @@ const settings = ['Login'];
 // TODO: Implement login functionality
 const userName = "Guest"
 
-function Navbar({navbarHeight}) {
+function Navbar({navBarHeight}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -39,10 +39,15 @@ function Navbar({navbarHeight}) {
     setAnchorElUser(null);
   };
 
-
+  console.log(navBarHeight)
   return (
     <>
-    <AppBar position='sticky' sx={{boxShadow: 'none', maxHeight: `${navbarHeight}rem`}}>
+    <AppBar position='sticky' sx= {
+      {
+       boxShadow:'none',
+       height: `${navBarHeight}vh`
+      }
+      }>
       <Container maxWidth="100%" sx={{margin: 'None'}}>
         <Toolbar disableGutters sx={{width:'100%'}}>
           <School sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
