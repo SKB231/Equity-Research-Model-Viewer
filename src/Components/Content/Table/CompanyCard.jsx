@@ -53,7 +53,6 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                 data["sheets"][0],
                 "#FBE5D6"
             );
-            console.log(markedCells);
             for (const idx in markedCells) {
                 const [row, cell] = markedCells[idx];
                 spreadsheet["sheets"][0]["rows"][row]["cells"][

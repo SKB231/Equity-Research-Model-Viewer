@@ -55,7 +55,7 @@ export default function AddTable() {
                 let response = await spreadsheetRef.current.saveAsJson();
                 if (response) {
                     let workbook = response["jsonObject"];
-                    await protectUnmarkedCells(workbook);
+                    await protectAllCells(workbook);
                     setFileJson(workbook);
                 }
             } catch (e) {
@@ -72,22 +72,9 @@ export default function AddTable() {
         // spreadsheet.openFromJson({ file: data });
     }, []);
 
-    const protectUnmarkedCells = async (data) => {
+    const protectAllCells = async (data) => {
         const spreadsheet = spreadsheetRef.current;
         spreadsheet.protectSheet(0, { selectCells: true, formatCells: false });
-        if (data && data["Workbook"] && data["Workbook"]["sheets"]) {
-            const markedCells = getAllCellsWithColor(
-                data["Workbook"]["sheets"][0],
-                "#FBE5D6"
-            );
-
-            for (const idx in markedCells) {
-                const [row, cell] = markedCells[idx];
-                spreadsheet["sheets"][0]["rows"][row]["cells"][
-                    cell
-                ].isLocked = false;
-            }
-        }
     };
 
     // Use Effect called when form values change.
