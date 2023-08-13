@@ -19,9 +19,9 @@ const getCompanyStock = async (requestBody) => {
 
         if (responseData) {
             console.log("Retrived company stock information successfully");
-            return 0;
+            return responseData;
         } else {
-            return 1;
+            return null;
         }
     } catch (error) {
         // Handle any errors
@@ -34,16 +34,15 @@ const getCompanyStock = async (requestBody) => {
  * Returns the current stock price information for the given company
  * @param requestBody of format {symbol: Company_Ticker}
  */
-const getCompanyCurrentStock = async (requestBody) => {
+const getCompanyCurrentStock = async ({ symbol }) => {
     try {
         const response = await fetch(
-            "http://localhost:3500/yahooFinance/getCompanyStockInfo",
+            `http://localhost:3500/yahooFinance/getCurrentStockPrice/${symbol}`,
             {
-                method: "POST",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(requestBody),
             }
         );
 
@@ -63,4 +62,37 @@ const getCompanyCurrentStock = async (requestBody) => {
     }
 };
 
-export { getCompanyCurrentStock, getCompanyStock };
+/**
+ * Return the single stock information to show along with the graph
+ * @param requestObject which is just thes ticker
+ */
+const getCompanyStockInfo = async ({ symbol }) => {
+    try {
+        const response = await fetch(
+            `http://localhost:3500/yahooFinance/getCompanyStockInfo`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ symbol: symbol }),
+            }
+        );
+
+        const responseData = await response.json();
+        console.log(responseData);
+        if (responseData) {
+            console.log("Retrived company stock summary successfully");
+
+            return responseData;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        // Handle any errors
+        console.error(error);
+        return 1;
+    }
+};
+
+export { getCompanyCurrentStock, getCompanyStock, getCompanyStockInfo };
