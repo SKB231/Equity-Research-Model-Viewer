@@ -25,7 +25,6 @@ const createCompany = async ({ jsonFile, name, ticker, type }) => {
         }
     } catch (error) {
         // Handle any errors
-        console.log("Hellooo");
         console.error(error);
         return 1;
     }

@@ -13,16 +13,20 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const firebase_module_1 = require("./firebase/firebase.module");
 const firebase_service_1 = require("./firebase/firebase.service");
+const yahooFinance_module_1 = require("./yahooFinance/yahooFinance.module");
+const yahooFinance_service_1 = require("./yahooFinance/yahooFinance.service");
 let AppModule = exports.AppModule = class AppModule {
-    constructor(firebaseService) {
+    constructor(firebaseService, yahooFinanceService) {
         this.firebaseService = firebaseService;
+        this.yahooFinanceService = yahooFinanceService;
     }
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [firebase_module_1.FirebaseModule],
-        providers: [firebase_service_1.FirebaseService],
+        imports: [firebase_module_1.FirebaseModule, yahooFinance_module_1.yahooFinanceModule],
+        providers: [firebase_service_1.FirebaseService, yahooFinance_service_1.yahooFinanceService],
     }),
-    __metadata("design:paramtypes", [firebase_service_1.FirebaseService])
+    __metadata("design:paramtypes", [firebase_service_1.FirebaseService,
+        yahooFinance_service_1.yahooFinanceService])
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

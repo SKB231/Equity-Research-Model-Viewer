@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { FirebaseService } from './firebase/firebase.service';
+import { yahooFinanceModule } from './yahooFinance/yahooFinance.module';
+import { yahooFinanceService } from './yahooFinance/yahooFinance.service';
 
 @Module({
-  imports: [FirebaseModule],
-  providers: [FirebaseService],
+  imports: [FirebaseModule, yahooFinanceModule],
+  providers: [FirebaseService, yahooFinanceService],
 })
 export class AppModule {
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(
+    private firebaseService: FirebaseService,
+    private yahooFinanceService: yahooFinanceService,
+  ) {}
 }

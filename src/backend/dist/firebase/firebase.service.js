@@ -29,7 +29,6 @@ let FirebaseService = exports.FirebaseService = class FirebaseService {
     }
     async addCompany(newCompany) {
         try {
-            console.log(newCompany);
             const q = (0, firestore_1.query)((0, firestore_1.collection)(this.fireStore, 'companies'), (0, firestore_1.where)('ticker', '==', newCompany.ticker));
             const querySnapshot = await (0, firestore_1.getDocs)(q);
             let id = null;

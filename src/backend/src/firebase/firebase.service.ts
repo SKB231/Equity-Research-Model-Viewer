@@ -38,7 +38,6 @@ export class FirebaseService {
 
   async addCompany(newCompany: Company) {
     try {
-      console.log(newCompany);
       const q = query(
         collection(this.fireStore, 'companies'),
         where('ticker', '==', newCompany.ticker),
