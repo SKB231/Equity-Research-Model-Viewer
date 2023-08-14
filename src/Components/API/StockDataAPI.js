@@ -80,7 +80,6 @@ const getCompanyStockInfo = async ({ symbol }) => {
         );
 
         const responseData = await response.json();
-        console.log(responseData);
         if (responseData) {
             console.log("Retrived company stock summary successfully");
 

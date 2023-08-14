@@ -31,6 +31,6 @@ const createCompany = async ({ jsonFile, name, ticker, type }) => {
 };
 
 const getAllCompanies = () => {
-    fetch("http://localhost:3000/firebase/getAllCompanies")
+    fetch("http://localhost:3000/firebase/getAllCompanies");
 };
 export { createCompany, getAllCompanies };

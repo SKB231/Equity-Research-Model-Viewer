@@ -12,6 +12,9 @@ import {
 } from "../../API/StockDataAPI";
 
 import Chart from "react-apexcharts";
+import StockSummaryInformation from "../StockSummaryInfo";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 export default function CompanyCard({ companyName, jsonFile, ticker }) {
     const spreadsheetRef = useRef(null);
@@ -47,7 +50,7 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
         },
     });
     const [stockSummaryInformation, setStockSummaryInfo] = useState({});
-
+    const [yahooCompanyName, setYahooCompanyName] = useState(companyName);
     const protectUnmarkedCells = async (data) => {
         const spreadsheet = spreadsheetRef.current;
         spreadsheet.protectSheet(0, { selectCells: true, formatCells: false });
@@ -93,7 +96,6 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                 y: [open, high,low, close]
             }
          */
-
         const chartData = data.response.map((element) => {
             return {
                 x: new Date(element.date * 1000),
@@ -113,7 +115,7 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                     height: 350,
                 },
                 title: {
-                    text: "CandleStick Chart",
+                    text: `${yahooCompanyName} Stock`,
                     align: "left",
                 },
                 xaxis: {
@@ -126,19 +128,41 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                 },
             },
         });
+        const companyStockInfoResponseData = await getCompanyStockInfo({
+            symbol: ticker,
+        });
+        if (companyStockInfoResponseData) {
+            const { name, response } = companyStockInfoResponseData;
+            const {
+                earningsDate,
+                eps,
+                fiftyTwoWeekRange,
+                forwardDividend,
+                forwardYield,
+                marketCap,
+                peRatio,
+            } = response;
 
-        const respData = (await getCompanyStockInfo({ symbol: ticker }))
-            .response;
-        setStockSummaryInfo(respData);
+            const mapData = {
+                earningsDate,
+                eps,
+                fiftyTwoWeekRange,
+                forwardDividend,
+                forwardYield,
+                marketCap,
+                peRatio,
+            };
+            setStockSummaryInfo(Object.entries(mapData));
+            setYahooCompanyName(name);
+        }
     };
 
     const updateStockValues = async () => {
         const { previousClose, regularMarketPrice } =
             await getCompanyCurrentStock({ symbol: ticker });
         setStockInfo({ previousClose, current: regularMarketPrice });
-        updateStockChartValues();
     };
-
+    console.log(stockSummaryInformation);
     useEffect(() => {
         let spreadsheet = spreadsheetRef.current;
         if (jsonFile && spreadsheet) {
@@ -150,10 +174,9 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
             console.log(spreadsheet);
             protectUnmarkedCells(spreadsheet);
         }
-
         updateStockValues();
+        updateStockChartValues();
     }, [companyName, jsonFile, ticker]);
-
     return (
         <Card
             sx={{
@@ -169,7 +192,7 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                 }}
             >
                 <h1>
-                    <h1>{companyName}</h1>
+                    <h1>{yahooCompanyName}</h1>
                 </h1>
                 <h2>
                     <h4 sx={{ color: grey }}>{ticker}</h4>
@@ -180,13 +203,13 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                     margin: "1rem",
                 }}
             >
+                <h3>PROFILE</h3>
                 {stockInfo &&
                     stockInfo.previousClose != 0 &&
                     stockInfo.previousClose != undefined && (
                         <StockCard ticker={ticker} stockInfo={stockInfo} />
                     )}
             </Box>
-
             <div style={{ height: "100vh", margin: "2rem" }}>
                 <SpreadsheetComponent
                     ref={spreadsheetRef}
@@ -194,12 +217,13 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                     saveUrl="https://services.syncfusion.com/react/production/api/spreadsheet/save"
                 ></SpreadsheetComponent>
             </div>
-
             <Box
                 sx={{
                     margin: "1rem",
+                    width: "100%",
                 }}
             >
+                <h3>SUMMARY</h3>
                 {stockChartData.series && stockChartData.series.length > 0 && (
                     <Chart
                         options={stockChartData.options}
@@ -209,8 +233,13 @@ export default function CompanyCard({ companyName, jsonFile, ticker }) {
                     />
                 )}
             </Box>
-
-            <Box>{JSON.stringify(stockSummaryInformation)}</Box>
+            <StockSummaryInformation
+                stockSummaryInformation={stockSummaryInformation}
+            ></StockSummaryInformation>
+            <Box sx={{ margin: "2rem" }}>
+                <h4>KEY COMMENTS</h4>
+                <SimpleMDE />
+            </Box>
         </Card>
     );
 }
