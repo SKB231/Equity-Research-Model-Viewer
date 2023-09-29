@@ -1,5 +1,6 @@
-const prefix = "10.15.49.14";
+let prefix = "equity-research-backend-production.up.railway.app";
 //localhost
+// prefix = 'localhost:3500'
 
 /**
  * Returns the stock price history based on the given parameter
@@ -8,7 +9,7 @@ const prefix = "10.15.49.14";
 const getCompanyStock = async (requestBody) => {
     try {
         const response = await fetch(
-            `http://${prefix}:3500/yahooFinance/getCompanyStock`,
+            `https://${prefix}/yahooFinance/getCompanyStock`,
             {
                 method: "POST",
                 headers: {
@@ -40,7 +41,7 @@ const getCompanyStock = async (requestBody) => {
 const getCompanyCurrentStock = async ({ symbol }) => {
     try {
         const response = await fetch(
-            `http://${prefix}:3500/yahooFinance/getCurrentStockPrice/${symbol}`,
+            `https://${prefix}/yahooFinance/getCurrentStockPrice/${symbol}`,
             {
                 method: "GET",
                 headers: {
@@ -72,7 +73,7 @@ const getCompanyCurrentStock = async ({ symbol }) => {
 const getCompanyStockInfo = async ({ symbol }) => {
     try {
         const response = await fetch(
-            `http://${prefix}:3500/yahooFinance/getCompanyStockInfo`,
+            `https://${prefix}/yahooFinance/getCompanyStockInfo`,
             {
                 method: "POST",
                 headers: {

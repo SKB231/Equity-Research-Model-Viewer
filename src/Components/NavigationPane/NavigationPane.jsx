@@ -6,8 +6,10 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { ListItemButton, ListItemIcon, SwipeableDrawer } from "@mui/material";
 import { FormatItalic, NoteAdd, SwipeUpAlt } from "@mui/icons-material";
 import { getAllCompanies } from "../API/DatabaseAPI";
-const prefix = "10.15.49.14";
+let prefix = "equity-research-backend-production.up.railway.app";
 //localhost
+// prefix = "localhost:3500";
+
 export default function NavigationPane({
     height,
     setStateVal,
@@ -28,7 +30,7 @@ export default function NavigationPane({
     useEffect(() => {
         const getCompanies = async () => {
             const fetchResponse = await fetch(
-                `http://${prefix}:3500/firebase/getAllCompanies`,
+                `https://${prefix}/firebase/getAllCompanies`,
                 {
                     method: "GET",
                     headers: {

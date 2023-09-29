@@ -114,12 +114,17 @@ export default function CompanyCard({
                 y: [open, high,low, close]
             }
          */
-        const chartData = data.response.map((element) => {
-            return {
-                x: new Date(element.date * 1000),
-                y: [element.open, element.high, element.low, element.close],
-            };
-        });
+        let chartData = [];
+
+        if (data && data.response && data.response.length > 0) {
+            chartData = data.response.map((element) => {
+                return {
+                    x: new Date(element.date * 1000),
+                    y: [element.open, element.high, element.low, element.close],
+                };
+            });
+        }
+
         setStockChartData({
             series: [
                 {
@@ -149,20 +154,6 @@ export default function CompanyCard({
         const companyStockInfoResponseData = await getCompanyStockInfo({
             symbol: ticker,
         });
-        if (companyStockInfoResponseData) {
-            const { name, response } = companyStockInfoResponseData;
-            const {
-                earningsDate,
-                eps,
-                fiftyTwoWeekRange,
-                forwardDividend,
-                forwardYield,
-                marketCap,
-                peRatio,
-            } = response;
-
-            setYahooCompanyName(name);
-        }
     };
 
     const updateStockValues = async () => {
@@ -184,8 +175,7 @@ export default function CompanyCard({
         updateStockValues();
         updateStockChartValues();
     }, [companyName, jsonFile, ticker]);
-    const linkToPPTFile =
-        "https://docs.google.com/presentation/d/172oFC8-LBw0GQEymFDbTBn-ORh7wi2ByfUXrXm7H-AM/edit#slide=id.gc6f972163_0_0";
+
     return (
         <Card
             sx={{
@@ -262,9 +252,12 @@ export default function CompanyCard({
                             </>
                         )}
                 </Box>
-                <StockSummaryInformation
-                    stockSummaryInformation={JSON.parse(table)}
-                ></StockSummaryInformation>
+                {table && (
+                    <StockSummaryInformation
+                        stockSummaryInformation={JSON.parse(table)}
+                    ></StockSummaryInformation>
+                )}
+
                 <WebcastLink webcastLink={recentWebcast}></WebcastLink>
                 <SlideViewer pdfLink={linkToSlide} />
                 <Box

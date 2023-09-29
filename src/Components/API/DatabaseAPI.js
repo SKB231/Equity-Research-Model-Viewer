@@ -1,5 +1,6 @@
-const prefix = "10.15.49.14";
+let prefix = "equity-research-backend-production.up.railway.app";
 //localhost
+prefix = 'localhost:3500'
 
 const createCompany = async ({
     jsonFile,
@@ -15,7 +16,7 @@ const createCompany = async ({
     try {
         console.log("CREATING NEW COMP");
         const response = await fetch(
-            `http://${prefix}:3500/firebase/createCompany`,
+            `https://${prefix}/firebase/createCompany`,
             {
                 method: "POST",
                 headers: {
@@ -50,6 +51,6 @@ const createCompany = async ({
 };
 
 const getAllCompanies = () => {
-    fetch(`http://${prefix}:3500/firebase/getAllCompanies`);
+    fetch(`https://${prefix}/firebase/getAllCompanies`);
 };
 export { createCompany, getAllCompanies };
