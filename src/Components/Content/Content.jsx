@@ -6,14 +6,18 @@ import { useState } from "react";
 const Content = ({ height, selectedAddTable, selectedCompany }) => {
     console.log(selectedCompany);
     return (
-        <Paper
-            bgcolor={"grey"}
+        <div
             flex={10}
             sx={{
-                overflow: "hidden",
+                // overflow: "hidden",
                 maxHeight: `${height}vh`,
                 minHeight: `${height}vh`,
                 width: "100%",
+                background: "transparent",
+                color: "white",
+                overflow: "scroll",
+                display: "flex",
+                justifyContent: "center",
             }}
         >
             {selectedAddTable && <AddTable />}
@@ -22,9 +26,15 @@ const Content = ({ height, selectedAddTable, selectedCompany }) => {
                     companyName={selectedCompany?.name}
                     ticker={selectedCompany?.ticker}
                     jsonFile={selectedCompany?.jsonFile}
+                    companyInformation={selectedCompany?.companyInformation}
+                    displayWebcast={selectedCompany?.displayWebcast}
+                    recentWebcast={selectedCompany?.recentWebcast}
+                    keyComments={selectedCompany?.keyComments}
+                    linkToSlide={selectedCompany?.linkToSlide}
+                    table={selectedCompany.table}
                 />
             )}
-        </Paper>
+        </div>
     );
 };
 

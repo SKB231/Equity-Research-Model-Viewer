@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Box } from "@mui/material";
 
-export default function StockCard({ ticker, stockInfo }) {
+export default function StockCard({ ticker, stockInfo, companyInformation }) {
     return (
         <Box
             sx={{
@@ -15,37 +15,55 @@ export default function StockCard({ ticker, stockInfo }) {
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
+                color: "inherit",
             }}
         >
             <Card
                 sx={{
-                    minWidth: 300,
-                    margin: "rem",
-                    background: "#1876c2",
+                    minWidth: 200,
+                    margin: "2rem",
+                    background:
+                        "linear-gradient(135deg, #9CA0FE 0%, #130139 100%)",
                 }}
             >
                 <CardActionArea>
-                    <CardContent sx={{ color: "white" }}>
+                    <CardContent
+                        sx={{
+                            color: "white",
+                            justifyContent: "center",
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
                         <Typography gutterBottom variant="h5" component="div">
                             $ {stockInfo.current}
                         </Typography>
-                        <Typography variant="body2" color="white">
-                            {" "}
-                            {Math.round(
-                                (stockInfo.current - stockInfo.previousClose) *
-                                    100
-                            ) / 100}{" "}
-                            ${stockInfo.previousClose} Previous Close
-                        </Typography>
+                        <Typography>Previous Close</Typography>
+
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-around",
+                                width: "100%",
+                            }}
+                        >
+                            <Typography color="white">
+                                {" "}
+                                {Math.round(
+                                    (stockInfo.current -
+                                        stockInfo.previousClose) *
+                                        100
+                                ) / 100}{" "}
+                            </Typography>
+                            <Typography>${stockInfo.previousClose}</Typography>
+                        </Box>
                     </CardContent>
                 </CardActionArea>
             </Card>
             <Typography sx={{ margin: "1rem" }}>
-                One of the world's oldest airlines in operation, Delta is
-                headquartered in Atlanta, Georgia. The airline, along with its
-                subsidiaries and regional affiliates, including Delta
-                Connection, operates over 5,400 flights daily and serves 325
-                destinations in 52 countries on six continents.{" "}
+                {companyInformation}
             </Typography>
         </Box>
     );

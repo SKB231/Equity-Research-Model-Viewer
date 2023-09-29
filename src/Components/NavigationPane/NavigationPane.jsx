@@ -3,14 +3,16 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
-import { ListItemButton, ListItemIcon } from "@mui/material";
-import { NoteAdd } from "@mui/icons-material";
+import { ListItemButton, ListItemIcon, SwipeableDrawer } from "@mui/material";
+import { FormatItalic, NoteAdd, SwipeUpAlt } from "@mui/icons-material";
 import { getAllCompanies } from "../API/DatabaseAPI";
 
 export default function NavigationPane({
     height,
     setStateVal,
     handleCompanySelection,
+    openDrawer,
+    setOpenDrawer,
 }) {
     let [companies, setCompanies] = useState({
         Airlines: [],
@@ -55,63 +57,93 @@ export default function NavigationPane({
 
         getCompanies();
     }, []);
+    console.log(openDrawer);
     return (
-        <List
-            flex={2}
-            sx={{
-                zIndex: "2",
-                width: "20%",
-                minWidth: "200px",
-                bgcolor: "background.paper",
-                "& ul": { padding: 0 },
-                maxHeight: `${height}vh`,
-                textAlign: "left",
-                overflow: "scroll",
-                paddingTop: "0px",
-                paddingBottom: "0px",
+        <SwipeableDrawer
+            open={openDrawer}
+            onClose={() => {
+                setOpenDrawer(false);
+            }}
+            onOpen={() => {
+                setOpenDrawer(true);
             }}
         >
-            <ListItemButton
-                sx={{ justifyContent: "space-around" }}
-                onClick={() =>
-                    setStateVal({ showAddTable: true, selectedCompany: null })
-                }
+            <List
+                flex={2}
+                sx={{
+                    zIndex: "2",
+                    minWidth: "200px",
+                    width: "200px",
+                    bgcolor: "transparent",
+                    "& ul": { padding: 0 },
+                    maxHeight: `${height}vh`,
+                    textAlign: "left",
+                    overflow: "scroll",
+                }}
             >
-                <ListItemIcon sx={{ justifyContent: "center" }}>
-                    <NoteAdd />
-                </ListItemIcon>
-                <ListItem sx={{ textAlign: "left" }}>Add Table</ListItem>
-            </ListItemButton>
-            {[
-                "Airlines",
-                "Packages",
-                "RRs",
-                "Trucking",
-                "Manufacturing",
-                "Uber",
-            ].map((sectionId) => {
-                if (companies[sectionId]) {
-                    return (
-                        <li key={`section-${sectionId}`}>
-                            <ul>
-                                <ListSubheader>{sectionId}</ListSubheader>
-                                {companies[sectionId].map((item) => (
-                                    <ListItem key={`item-${sectionId}-${item}`}>
-                                        <ListItemButton
-                                            onClick={() => {
-                                                handleCompanySelection(item[1]);
+                <ListItemButton
+                    sx={{ justifyContent: "space-around" }}
+                    onClick={() =>
+                        setStateVal({
+                            showAddTable: true,
+                            selectedCompany: null,
+                        })
+                    }
+                >
+                    <ListItemIcon sx={{ justifyContent: "center" }}>
+                        <NoteAdd />
+                    </ListItemIcon>
+                    <ListItem sx={{ textAlign: "left" }}>Add Table</ListItem>
+                </ListItemButton>
+                {[
+                    "Airlines",
+                    "Packages",
+                    "RRs",
+                    "Trucking",
+                    "Manufacturing",
+                    "Uber",
+                ].map((sectionId) => {
+                    if (companies[sectionId]) {
+                        return (
+                            <li key={`section-${sectionId}`}>
+                                <ul>
+                                    <ListSubheader
+                                        sx={{
+                                            background: "transparent",
+                                            color: "inherit",
+                                            fontSize: "0.8rem",
+                                        }}
+                                    >
+                                        {sectionId}
+                                    </ListSubheader>
+                                    {companies[sectionId].map((item) => (
+                                        <ListItem
+                                            key={`item-${sectionId}-${item}`}
+                                            sx={{
+                                                background: "transparent",
                                             }}
                                         >
-                                            <ListItemText primary={item[0]} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))}
-                            </ul>
-                        </li>
-                    );
-                }
-                return null;
-            })}
-        </List>
+                                            <ListItemButton
+                                                onClick={() => {
+                                                    handleCompanySelection(
+                                                        item[1]
+                                                    );
+                                                    setOpenDrawer(false);
+                                                }}
+                                            >
+                                                <ListItemText
+                                                    primary={item[0]}
+                                                />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    ))}
+                                </ul>
+                            </li>
+                        );
+                    }
+                    return null;
+                })}
+            </List>
+        </SwipeableDrawer>
     );
 }

@@ -9,11 +9,9 @@ import {
   setDoc,
   collection,
   getDocs,
-  DocumentData,
   query,
   addDoc,
   where,
-  DocumentReference,
 } from 'firebase/firestore';
 import { Company } from './databaseTypes';
 import { error } from 'console';
@@ -42,7 +40,7 @@ export class FirebaseService {
         collection(this.fireStore, 'companies'),
         where('ticker', '==', newCompany.ticker),
       );
-
+      console.log(newCompany);
       const querySnapshot = await getDocs(q);
       let id: string = null;
       querySnapshot.forEach((doc) => {
@@ -52,10 +50,11 @@ export class FirebaseService {
         await setDoc(doc(this.fireStore, 'companies', id), newCompany);
         return { msg: 'Successfully modified the company.' };
       }
-
+      console.log('NO COMPANIES WITH SUCH TICKER FOUND! CREATING NEW COMPANY');
       await addDoc(collection(this.fireStore, 'companies'), newCompany);
       return { msg: 'The company information was added successfully.' };
     } catch (e: any) {
+      console.log(e);
       return {
         msg: `There was an error with adding the company: ${e.message}`,
         other: e.stack,

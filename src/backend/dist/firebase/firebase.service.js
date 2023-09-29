@@ -30,6 +30,7 @@ let FirebaseService = exports.FirebaseService = class FirebaseService {
     async addCompany(newCompany) {
         try {
             const q = (0, firestore_1.query)((0, firestore_1.collection)(this.fireStore, 'companies'), (0, firestore_1.where)('ticker', '==', newCompany.ticker));
+            console.log(newCompany);
             const querySnapshot = await (0, firestore_1.getDocs)(q);
             let id = null;
             querySnapshot.forEach((doc) => {
@@ -39,10 +40,12 @@ let FirebaseService = exports.FirebaseService = class FirebaseService {
                 await (0, firestore_1.setDoc)((0, firestore_1.doc)(this.fireStore, 'companies', id), newCompany);
                 return { msg: 'Successfully modified the company.' };
             }
+            console.log('NO COMPANIES WITH SUCH TICKER FOUND! CREATING NEW COMPANY');
             await (0, firestore_1.addDoc)((0, firestore_1.collection)(this.fireStore, 'companies'), newCompany);
             return { msg: 'The company information was added successfully.' };
         }
         catch (e) {
+            console.log(e);
             return {
                 msg: `There was an error with adding the company: ${e.message}`,
                 other: e.stack,

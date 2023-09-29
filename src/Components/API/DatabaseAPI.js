@@ -1,5 +1,16 @@
-const createCompany = async ({ jsonFile, name, ticker, type }) => {
+const createCompany = async ({
+    jsonFile,
+    name,
+    ticker,
+    type,
+    recentWebcast,
+    companyInformation,
+    keyComments,
+    linkToSlide,
+    table,
+}) => {
     try {
+        console.log("CREATING NEW COMP");
         const response = await fetch(
             "http://localhost:3500/firebase/createCompany",
             {
@@ -12,6 +23,11 @@ const createCompany = async ({ jsonFile, name, ticker, type }) => {
                     name: name,
                     ticker: ticker,
                     type: type,
+                    recentWebcast: recentWebcast,
+                    companyInformation: companyInformation,
+                    keyComments: keyComments,
+                    linkToSlide: linkToSlide,
+                    table: table,
                 }),
             }
         );

@@ -29,11 +29,17 @@ let FirebaseController = exports.FirebaseController = class FirebaseController {
         return this.service.deleteCompany(body.companyId);
     }
     async createCompany(body) {
-        return this.service.addCompany({
+        console.log('ADDING COMPANY');
+        return await this.service.addCompany({
             jsonFile: body.jsonFile,
             name: body.name,
             ticker: body.ticker,
             type: body.type,
+            recentWebcast: body.recentWebcast,
+            companyInformation: body.companyInformation,
+            keyComments: body.keyComments,
+            linkToSlide: body.linkToSlide,
+            table: body.table,
         });
     }
 };

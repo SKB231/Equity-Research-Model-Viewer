@@ -26,11 +26,17 @@ export class FirebaseController {
     @Body()
     body: Company,
   ) {
-    return this.service.addCompany({
+    console.log('ADDING COMPANY');
+    return await this.service.addCompany({
       jsonFile: body.jsonFile,
       name: body.name,
       ticker: body.ticker,
       type: body.type,
+      recentWebcast: body.recentWebcast,
+      companyInformation: body.companyInformation,
+      keyComments: body.keyComments,
+      linkToSlide: body.linkToSlide,
+      table: body.table,
     });
   }
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Stack } from "@mui/material";
+import { Paper, Stack, Button } from "@mui/material";
 import Content from "./Components/Content/Content";
 import NavigationPane from "./Components/NavigationPane/NavigationPane";
 import Navbar from "./Components/Navbar/Navbar";
@@ -8,6 +8,7 @@ import { registerLicense } from "@syncfusion/ej2-base";
 function App() {
     const [selectedAddTable, setSelectedAddTable] = useState(false);
     const [selectedCompany, setSelectedCompany] = useState(null);
+    const [openDrawer, setOpenDrawer] = useState(true);
 
     const [stateVal, setStateVal] = useState({
         showAddTable: true,
@@ -34,24 +35,38 @@ function App() {
         <Paper
             sx={{
                 overflow: "hidden",
+                background: "#010922",
+                color: "white",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
             }}
         >
             <Stack
                 height={"100%"}
                 sx={{
-                    overflow: "hidden",
+                    color: "inherit",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
                 }}
             >
-                <Navbar navBarHeight={navBarHeight}></Navbar>
+                <Navbar
+                    navBarHeight={navBarHeight}
+                    setOpenDrawer={setOpenDrawer}
+                ></Navbar>
                 <Stack
                     direction={"row"}
                     spacing={0.05}
-                    justifyContent="space-between"
+                    display={"flex"}
+                    justifyContent="center"
                 >
                     <NavigationPane
                         height={100 - navBarHeight}
                         setStateVal={setStateVal}
                         handleCompanySelection={handleCompanySelection}
+                        openDrawer={openDrawer}
+                        setOpenDrawer={setOpenDrawer}
                     />
                     <Content
                         height={100 - navBarHeight}

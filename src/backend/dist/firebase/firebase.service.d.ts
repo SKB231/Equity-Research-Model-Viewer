@@ -1,4 +1,4 @@
-import { Firestore, DocumentData } from 'firebase/firestore';
+import { Firestore } from 'firebase/firestore';
 import { Company } from './databaseTypes';
 export declare class FirebaseService {
     fireStore: Firestore;
@@ -18,6 +18,6 @@ export declare class FirebaseService {
         msg: string;
         other: any;
     }>;
-    getCompany(companyID: string): Promise<DocumentData | import("@firebase/firestore").DocumentSnapshot<DocumentData>>;
+    getCompany(companyID: string): Promise<import("@firebase/firestore").DocumentData | import("@firebase/firestore").DocumentSnapshot<import("@firebase/firestore").DocumentData>>;
     getCompanyCollection(): Promise<any[]>;
 }
