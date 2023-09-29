@@ -2,8 +2,13 @@ import { Paper } from "@mui/material";
 import CompanyCard from "./Table/CompanyCard";
 import AddTable from "./Table/AddTable";
 import { useState } from "react";
-
-const Content = ({ height, selectedAddTable, selectedCompany }) => {
+import About from "./About";
+const Content = ({
+    height,
+    selectedAddTable,
+    selectedCompany,
+    isAboutPage,
+}) => {
     console.log(selectedCompany);
     return (
         <div
@@ -20,8 +25,9 @@ const Content = ({ height, selectedAddTable, selectedCompany }) => {
                 justifyContent: "center",
             }}
         >
-            {selectedAddTable && <AddTable />}
-            {!selectedAddTable && (
+            {isAboutPage && <About />}
+            {!isAboutPage && selectedAddTable && <AddTable />}
+            {!isAboutPage && !selectedAddTable && (
                 <CompanyCard
                     companyName={selectedCompany?.name}
                     ticker={selectedCompany?.ticker}

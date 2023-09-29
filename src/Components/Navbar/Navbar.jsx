@@ -15,14 +15,15 @@ import { AdbIcon } from "@mui/icons-material";
 import { margin } from "@mui/system";
 import { School } from "@mui/icons-material";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
-const pages = ["About", "Coms", "Tables"];
+const pages = ["About", "Tables"];
 const settings = ["Login"];
 // TODO: Implement login functionality
 const userName = "Guest";
 
-function Navbar({ navBarHeight, setOpenDrawer }) {
+function Navbar({ navBarHeight, setOpenDrawer, setIsAboutPage, isAboutPage }) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -33,6 +34,14 @@ function Navbar({ navBarHeight, setOpenDrawer }) {
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
+    };
+
+    const handleOpenPage = (buttonName) => {
+        if (buttonName == "About") {
+            setIsAboutPage(true);
+        } else {
+            setIsAboutPage(false);
+        }
     };
 
     const handleCloseUserMenu = () => {
@@ -46,7 +55,7 @@ function Navbar({ navBarHeight, setOpenDrawer }) {
                 sx={{
                     background: "black",
                     boxShadow: "none",
-                    height: '60px'
+                    height: "60px",
                     // height: `${navBarHeight}vh`,
                 }}
             >
@@ -157,7 +166,7 @@ function Navbar({ navBarHeight, setOpenDrawer }) {
                             {pages.map((page) => (
                                 <Button
                                     key={page}
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => {handleOpenPage(page)}}
                                     sx={{
                                         my: 2,
                                         color: "white",
@@ -169,7 +178,13 @@ function Navbar({ navBarHeight, setOpenDrawer }) {
                             ))}
                         </Box>
 
-                        <Box sx={{ flexGrow: 0, margin: 0, maxHeight: `${navBarHeight}vh` }}>
+                        <Box
+                            sx={{
+                                flexGrow: 0,
+                                margin: 0,
+                                maxHeight: `${navBarHeight}vh`,
+                            }}
+                        >
                             <Tooltip title="Open settings">
                                 <IconButton
                                     onClick={handleOpenUserMenu}

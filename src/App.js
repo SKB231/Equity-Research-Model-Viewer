@@ -9,6 +9,7 @@ function App() {
     const [selectedAddTable, setSelectedAddTable] = useState(false);
     const [selectedCompany, setSelectedCompany] = useState(null);
     const [openDrawer, setOpenDrawer] = useState(true);
+    const [isAboutPage, setIsAboutPage] = React.useState(true);
 
     const [stateVal, setStateVal] = useState({
         showAddTable: true,
@@ -54,6 +55,8 @@ function App() {
                 <Navbar
                     navBarHeight={navBarHeight}
                     setOpenDrawer={setOpenDrawer}
+                    setIsAboutPage={setIsAboutPage}
+                    isAboutPage={isAboutPage}
                 ></Navbar>
                 <Stack
                     direction={"row"}
@@ -72,6 +75,7 @@ function App() {
                         height={100 - navBarHeight}
                         selectedAddTable={stateVal.showAddTable}
                         selectedCompany={stateVal.selectedCompany}
+                        isAboutPage={isAboutPage}
                     />
                 </Stack>
             </Stack>
