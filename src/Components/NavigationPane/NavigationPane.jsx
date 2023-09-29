@@ -6,7 +6,8 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { ListItemButton, ListItemIcon, SwipeableDrawer } from "@mui/material";
 import { FormatItalic, NoteAdd, SwipeUpAlt } from "@mui/icons-material";
 import { getAllCompanies } from "../API/DatabaseAPI";
-
+const prefix = "10.15.49.14";
+//localhost
 export default function NavigationPane({
     height,
     setStateVal,
@@ -27,7 +28,7 @@ export default function NavigationPane({
     useEffect(() => {
         const getCompanies = async () => {
             const fetchResponse = await fetch(
-                "http://localhost:3500/firebase/getAllCompanies",
+                `http://${prefix}:3500/firebase/getAllCompanies`,
                 {
                     method: "GET",
                     headers: {

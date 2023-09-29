@@ -1,3 +1,6 @@
+const prefix = "10.15.49.14";
+//localhost
+
 const createCompany = async ({
     jsonFile,
     name,
@@ -12,7 +15,7 @@ const createCompany = async ({
     try {
         console.log("CREATING NEW COMP");
         const response = await fetch(
-            "http://localhost:3500/firebase/createCompany",
+            `http://${prefix}:3500/firebase/createCompany`,
             {
                 method: "POST",
                 headers: {
@@ -47,6 +50,6 @@ const createCompany = async ({
 };
 
 const getAllCompanies = () => {
-    fetch("http://localhost:3000/firebase/getAllCompanies");
+    fetch(`http://${prefix}:3500/firebase/getAllCompanies`);
 };
 export { createCompany, getAllCompanies };

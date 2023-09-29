@@ -5,6 +5,9 @@ import NavigationPane from "./Components/NavigationPane/NavigationPane";
 import Navbar from "./Components/Navbar/Navbar";
 import { registerLicense } from "@syncfusion/ej2-base";
 
+const prefix = "10.15.49.14";
+//localhost
+
 function App() {
     const [selectedAddTable, setSelectedAddTable] = useState(false);
     const [selectedCompany, setSelectedCompany] = useState(null);
@@ -22,7 +25,7 @@ function App() {
 
     const handleCompanySelection = async (id) => {
         const fetchResp = await fetch(
-            "http://localhost:3500/firebase/getCompanyFromId/" + id
+            `http://${prefix}:3500/firebase/getCompanyFromId/` + id
         );
         const data = await fetchResp.json();
         setStateVal({
