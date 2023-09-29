@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import YahooStockAPI from 'yahoo-stock-api';
 import axios from 'axios';
-
 @Injectable()
 export class yahooFinanceService {
   async getHistoricalPrice({ startDate, endDate, symbol, frequency }) {
