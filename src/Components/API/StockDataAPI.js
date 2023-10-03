@@ -22,7 +22,6 @@ const getCompanyStock = async (requestBody) => {
         const responseData = await response.json();
 
         if (responseData) {
-            console.log("Retrived company stock information successfully");
             return responseData;
         } else {
             return null;
@@ -53,7 +52,6 @@ const getCompanyCurrentStock = async ({ symbol }) => {
         const responseData = await response.json();
 
         if (responseData) {
-            console.log("Retrived company stock information successfully");
 
             return responseData;
         } else {
@@ -85,7 +83,6 @@ const getCompanyStockInfo = async ({ symbol }) => {
 
         const responseData = await response.json();
         if (responseData) {
-            console.log("Retrived company stock summary successfully");
 
             return responseData;
         } else {

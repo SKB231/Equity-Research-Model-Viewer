@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Card from "@mui/material/Card";
 import { grey } from "@mui/material/colors";
 import { SpreadsheetComponent } from "@syncfusion/ej2-react-spreadsheet";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { getAllCellsWithColor } from "./Utility/tableProcessor";
 import StockCard from "../StockCard";
 import {
@@ -10,7 +10,7 @@ import {
     getCompanyStock,
     getCompanyStockInfo,
 } from "../../API/StockDataAPI";
-
+import { deleteCompany, deleteCompanyFromId } from "../../API/DatabaseAPI";
 import Chart from "react-apexcharts";
 import StockSummaryInformation from "../StockSummaryInfo";
 import SimpleMDE from "react-simplemde-editor";
@@ -20,6 +20,7 @@ import Markdown from "react-markdown";
 import SlideViewer from "./SlideViewer/SlideViewer";
 
 export default function CompanyCard({
+    companyId,
     companyName,
     jsonFile,
     ticker,
@@ -34,6 +35,10 @@ export default function CompanyCard({
         previousClose: 0,
         current: 0,
     });
+
+    const [delCompanyWarn, setDelCompanyWarn] = useState(false);
+
+    const [deletionInProcess, setDeletionInProcess] = useState(false);
 
     const [stockChartData, setStockChartData] = useState({
         series: [
@@ -169,12 +174,27 @@ export default function CompanyCard({
                 return;
             }
             spreadsheet.openFromJson({ file: jsonObj });
-            console.log(spreadsheet);
             protectUnmarkedCells(spreadsheet);
         }
         updateStockValues();
         updateStockChartValues();
     }, [companyName, jsonFile, ticker]);
+
+    const handleCompanyDeletion = () => {
+        setDelCompanyWarn(true);
+    };
+    const deleteCompany = async () => {
+        deleteCompanyFromId(companyId)
+            .then((response) => {
+                setDeletionInProcess(false);
+                window.location.reload();
+            })
+            .finally(() => {
+                setDeletionInProcess(false);
+                setDelCompanyWarn(false);
+            });
+        setDeletionInProcess(true);
+    };
 
     return (
         <Card
@@ -188,12 +208,58 @@ export default function CompanyCard({
                 justifyContent: "center",
             }}
         >
+            {delCompanyWarn && (
+                <Box
+                    sx={{
+                        position: "fixed",
+                        height: "100vh",
+                        width: "100%",
+                        background: "rgba(0,48,87,0.6)",
+                        zIndex: 10000,
+                        top: "0px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <h1>Are you sure you want to delete this page?</h1>
+                    <h2>You cannot undo this action!</h2>
+                    <Box>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            sx={{ margin: "1rem" }}
+                            onClick={deleteCompany}
+                        >
+                            YES
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="info"
+                            sx={{ margin: "1rem" }}
+                            onClick={() => {
+                                setDelCompanyWarn(false);
+                            }}
+                        >
+                            NO
+                        </Button>
+                    </Box>
+                </Box>
+            )}
             <Box
                 sx={{
                     width: "75%",
                     margin: "1rem",
                 }}
             >
+                <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleCompanyDeletion}
+                >
+                    DELETE
+                </Button>
                 <Box
                     sx={{
                         margin: "1rem",

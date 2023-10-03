@@ -14,7 +14,6 @@ export default function StockSummaryInfo({ stockSummaryInformation }) {
         return <></>;
     }
 
-    console.log(stockSummaryInformation);
     return (
         <TableContainer
             component={Box}

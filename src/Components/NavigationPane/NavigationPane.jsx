@@ -6,7 +6,10 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { ListItemButton, ListItemIcon, SwipeableDrawer } from "@mui/material";
 import { FormatItalic, NoteAdd, SwipeUpAlt } from "@mui/icons-material";
 import { getAllCompanies } from "../API/DatabaseAPI";
+import InfoIcon from "@mui/icons-material/Info";
+
 let prefix = "equity-research-backend-production.up.railway.app";
+
 //localhost
 // prefix = "localhost:3500";
 
@@ -16,6 +19,7 @@ export default function NavigationPane({
     handleCompanySelection,
     openDrawer,
     setOpenDrawer,
+    setIsAboutPage,
 }) {
     let [companies, setCompanies] = useState({
         Airlines: [],
@@ -60,7 +64,6 @@ export default function NavigationPane({
 
         getCompanies();
     }, []);
-    console.log(openDrawer);
     return (
         <SwipeableDrawer
             open={openDrawer}
@@ -86,12 +89,26 @@ export default function NavigationPane({
             >
                 <ListItemButton
                     sx={{ justifyContent: "space-around" }}
-                    onClick={() =>
+                    onClick={() => {
+                        setIsAboutPage(true);
+                        setOpenDrawer(false);
+                    }}
+                >
+                    <ListItemIcon sx={{ justifyContent: "center" }}>
+                        <InfoIcon />
+                    </ListItemIcon>
+                    <ListItem sx={{ textAlign: "left" }}>About</ListItem>
+                </ListItemButton>
+                <ListItemButton
+                    sx={{ justifyContent: "space-around" }}
+                    onClick={() => {
+                        setIsAboutPage(false);
                         setStateVal({
                             showAddTable: true,
                             selectedCompany: null,
-                        })
-                    }
+                        });
+                        setOpenDrawer(false);
+                    }}
                 >
                     <ListItemIcon sx={{ justifyContent: "center" }}>
                         <NoteAdd />
@@ -131,6 +148,7 @@ export default function NavigationPane({
                                                     handleCompanySelection(
                                                         item[1]
                                                     );
+                                                    setIsAboutPage(false);
                                                     setOpenDrawer(false);
                                                 }}
                                             >

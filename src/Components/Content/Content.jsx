@@ -7,9 +7,10 @@ const Content = ({
     height,
     selectedAddTable,
     selectedCompany,
+    companyId,
     isAboutPage,
 }) => {
-    console.log(selectedCompany);
+    console.log(companyId)
     return (
         <div
             flex={10}
@@ -29,6 +30,7 @@ const Content = ({
             {!isAboutPage && selectedAddTable && <AddTable />}
             {!isAboutPage && !selectedAddTable && (
                 <CompanyCard
+                    companyId={companyId}
                     companyName={selectedCompany?.name}
                     ticker={selectedCompany?.ticker}
                     jsonFile={selectedCompany?.jsonFile}

@@ -26,41 +26,37 @@ export default function StockCard({ ticker, stockInfo, companyInformation }) {
                         "linear-gradient(135deg, #9CA0FE 0%, #130139 100%)",
                 }}
             >
-                <CardActionArea>
-                    <CardContent
+                <CardContent
+                    sx={{
+                        color: "white",
+                        justifyContent: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                >
+                    <Typography gutterBottom variant="h5" component="div">
+                        $ {stockInfo.current}
+                    </Typography>
+                    <Typography>Previous Close</Typography>
+
+                    <Box
                         sx={{
-                            color: "white",
-                            justifyContent: "center",
-                            width: "100%",
                             display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
+                            justifyContent: "space-around",
+                            width: "100%",
                         }}
                     >
-                        <Typography gutterBottom variant="h5" component="div">
-                            $ {stockInfo.current}
+                        <Typography color="white">
+                            {" "}
+                            {Math.round(
+                                (stockInfo.current - stockInfo.previousClose) *
+                                    100
+                            ) / 100}{" "}
                         </Typography>
-                        <Typography>Previous Close</Typography>
-
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: "space-around",
-                                width: "100%",
-                            }}
-                        >
-                            <Typography color="white">
-                                {" "}
-                                {Math.round(
-                                    (stockInfo.current -
-                                        stockInfo.previousClose) *
-                                        100
-                                ) / 100}{" "}
-                            </Typography>
-                            <Typography>${stockInfo.previousClose}</Typography>
-                        </Box>
-                    </CardContent>
-                </CardActionArea>
+                        <Typography>${stockInfo.previousClose}</Typography>
+                    </Box>
+                </CardContent>
             </Card>
             <Typography sx={{ margin: "1rem" }}>
                 {companyInformation}

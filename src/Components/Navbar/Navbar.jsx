@@ -15,7 +15,6 @@ import { AdbIcon } from "@mui/icons-material";
 import { margin } from "@mui/system";
 import { School } from "@mui/icons-material";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
-const pages = ["About", "Tables"];
 const settings = ["Login"];
 // TODO: Implement login functionality
 const userName = "Guest";
@@ -24,7 +23,7 @@ function Navbar({ navBarHeight, setOpenDrawer, setIsAboutPage, isAboutPage }) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-
+    const title = "EQUITY RESEARCH";
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -59,177 +58,112 @@ function Navbar({ navBarHeight, setOpenDrawer, setIsAboutPage, isAboutPage }) {
                     // height: `${navBarHeight}vh`,
                 }}
             >
-                <Container maxWidth="100%" sx={{ margin: "None" }}>
-                    <Toolbar disableGutters sx={{ width: "100%" }}>
-                        <Button
-                            sx={{ color: "inherit" }}
-                            onClick={() => setOpenDrawer(true)}
-                        >
-                            <DensitySmallIcon />
-                        </Button>
-                        <School
-                            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-                        />
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="a"
-                            href="/"
-                            sx={{
-                                mr: 2,
-                                display: { xs: "none", md: "flex" },
-                                fontFamily: "Roboto",
-                                fontWeight: 700,
-                                letterSpacing: ".05rem",
-                                color: "inherit",
-                                textDecoration: "none",
-                                boxShadow: "none",
-                            }}
-                        >
-                            EQUITY RESEARCH
-                        </Typography>
-
+                <Container
+                    maxWidth="100%"
+                    sx={{ margin: "None", justifyContent: "space-between" }}
+                >
+                    <Toolbar sx={{ width: "100", display: 'flex', justifyContent: 'center'} }>
                         <Box
                             sx={{
-                                flexGrow: 1,
-                                display: { xs: "flex", md: "none" },
-                                justifyContent: "space-evenly",
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                width: "80%",
                             }}
                         >
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "left",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "left",
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
+                            <Box
                                 sx={{
-                                    display: { xs: "block", md: "none" },
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
                                 }}
                             >
-                                {pages.map((page) => (
-                                    <MenuItem
-                                        key={page}
-                                        onClick={handleCloseNavMenu}
-                                    >
-                                        <Typography textAlign="center">
-                                            {page}
-                                        </Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
-                        <School
-                            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-                        />
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href=""
-                            sx={{
-                                mr: 2,
-                                display: { xs: "flex", md: "none" },
-                                flexGrow: 1,
-                                fontFamily: "Roboto",
-                                fontWeight: 700,
-                                letterSpacing: ".05rem",
-                                color: "inherit",
-                                textDecoration: "none",
-                            }}
-                        >
-                            EQUITY RESEARCH
-                        </Typography>
-                        <Box
-                            sx={{
-                                flexGrow: 1,
-                                display: { xs: "none", md: "flex" },
-                            }}
-                        >
-                            {pages.map((page) => (
                                 <Button
-                                    key={page}
-                                    onClick={() => {handleOpenPage(page)}}
+                                    sx={{ color: "inherit" }}
+                                    onClick={() => setOpenDrawer(true)}
+                                >
+                                    <DensitySmallIcon />
+                                </Button>
+                                <School
                                     sx={{
-                                        my: 2,
-                                        color: "white",
-                                        display: "block",
+                                        display: { xs: "none", md: "flex" },
+                                        mr: 1,
+                                    }}
+                                />
+                                <Typography
+                                    variant="h6"
+                                    noWrap
+                                    component="a"
+                                    href="/"
+                                    sx={{
+                                        width: '100%',
+                                        mr: 2,
+                                        display: 'flex',
+                                        fontFamily: "Roboto",
+                                        fontWeight: 700,
+                                        letterSpacing: ".05rem",
+                                        color: "inherit",
+                                        textDecoration: "none",
+                                        boxShadow: "none",
+                                        textAlign: 'center'
                                     }}
                                 >
-                                    {page}
-                                </Button>
-                            ))}
-                        </Box>
-
-                        <Box
-                            sx={{
-                                flexGrow: 0,
-                                margin: 0,
-                                maxHeight: `${navBarHeight}vh`,
-                            }}
-                        >
-                            <Tooltip title="Open settings">
-                                <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    sx={{ p: 0 }}
-                                >
-                                    <Avatar
-                                        alt="Guest"
-                                        src="/static/images/avatar/2.jpg"
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: "45px" }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
+                                    {title}
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    flexGrow: 0,
+                                    margin: 0,
+                                    maxHeight: `${navBarHeight}vh`,
                                 }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
                             >
-                                <MenuItem
-                                    key={"Start"}
-                                    disabled={true}
-                                    textAlign="center"
-                                >
-                                    {userName}
-                                </MenuItem>
-                                {settings.map((setting) => (
-                                    <MenuItem
-                                        key={setting}
-                                        onClick={handleCloseUserMenu}
+                                <Tooltip title="Open settings">
+                                    <IconButton
+                                        onClick={handleOpenUserMenu}
+                                        sx={{ p: 0 }}
                                     >
-                                        <Typography textAlign="center">
-                                            {setting}
-                                        </Typography>
+                                        <Avatar
+                                            alt="Guest"
+                                            src="/static/images/avatar/2.jpg"
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+                                <Menu
+                                    sx={{ mt: "45px" }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    <MenuItem
+                                        key={"Start"}
+                                        disabled={true}
+                                        textAlign="center"
+                                    >
+                                        {userName}
                                     </MenuItem>
-                                ))}
-                            </Menu>
+                                    {settings.map((setting) => (
+                                        <MenuItem
+                                            key={setting}
+                                            onClick={handleCloseUserMenu}
+                                        >
+                                            <Typography textAlign="center">
+                                                {setting}
+                                            </Typography>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </Box>
                         </Box>
                     </Toolbar>
                 </Container>

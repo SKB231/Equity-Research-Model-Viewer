@@ -132,12 +132,10 @@ export default function AddTable() {
                     setStockSymbolValid(false);
                 } else {
                     setStockSymbolValid(true);
-                    console.log(data);
                 }
                 setUpdatingStockVal(false);
             });
         }
-        console.log(formValues);
         // New form values = (Prev_Form_Values) <Union> (New Form Values)
         setFormValues((prevValues) => ({
             ...prevValues,
@@ -170,14 +168,11 @@ export default function AddTable() {
     // Function to submit the form and call the API.
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("HELLO!");
         const newCompany = await getCompany();
-        console.log(newCompany);
 
         const resp = await createCompany(newCompany);
-        console.log(resp);
         if (resp == 0) {
-            alert("Successfully added company!");
+            window.location.reload();
         } else {
             alert(
                 "Some error occured while submitting the information. Please try submitting again!"
