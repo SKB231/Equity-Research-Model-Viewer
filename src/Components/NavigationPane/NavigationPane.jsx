@@ -20,6 +20,8 @@ export default function NavigationPane({
     openDrawer,
     setOpenDrawer,
     setIsAboutPage,
+    reloadRequired,
+    setReloadRequired,
 }) {
     let [companies, setCompanies] = useState({
         Airlines: [],
@@ -60,10 +62,11 @@ export default function NavigationPane({
                 ]);
             }
             setCompanies(tempData);
+            setReloadRequired(false);
         };
 
         getCompanies();
-    }, []);
+    }, [reloadRequired]);
     return (
         <SwipeableDrawer
             open={openDrawer}
@@ -117,7 +120,7 @@ export default function NavigationPane({
                 </ListItemButton>
                 {[
                     "Airlines",
-                    "Packages",
+                    "Package",
                     "RRs",
                     "Trucking",
                     "Manufacturing",
