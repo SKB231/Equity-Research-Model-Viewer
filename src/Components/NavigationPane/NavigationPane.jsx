@@ -53,6 +53,7 @@ export default function NavigationPane({
                 Manufacturing: [],
                 Uber: [],
                 UberEats: [],
+                Transport: [],
             };
             for (const key in newCompanies) {
                 const type = newCompanies[key]["data"]["type"];
@@ -125,6 +126,7 @@ export default function NavigationPane({
                     "Trucking",
                     "Manufacturing",
                     "Uber",
+                    "Transport",
                 ].map((sectionId) => {
                     if (companies[sectionId]) {
                         return (

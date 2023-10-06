@@ -249,6 +249,9 @@ export default function AddTable() {
                                     <MenuItem value="Manufacturing">
                                         Manufacturing
                                     </MenuItem>
+                                    <MenuItem value="Manufacturing">
+                                        Uber
+                                    </MenuItem>
                                     <MenuItem value="Transport">
                                         Transport
                                     </MenuItem>
