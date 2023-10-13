@@ -30,6 +30,7 @@ const getAllCellsWithColor = (sheet, color) => {
             if (
                 !cellKey ||
                 !cells[cellKey] ||
+                !cells[cellKey]["style"] ||
                 !cells[cellKey]["style"]["backgroundColor"]
             ) {
                 continue;
