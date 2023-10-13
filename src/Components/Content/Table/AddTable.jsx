@@ -172,7 +172,7 @@ export default function AddTable() {
 
         const resp = await createCompany(newCompany);
         if (resp == 0) {
-            window.location.reload();
+
         } else {
             alert(
                 "Some error occured while submitting the information. Please try submitting again!"

@@ -67,7 +67,7 @@ export default function NavigationPane({
         };
 
         getCompanies();
-    }, [reloadRequired]);
+    }, []);
     return (
         <SwipeableDrawer
             open={openDrawer}

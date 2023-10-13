@@ -80,7 +80,7 @@ function App() {
                         setOpenDrawer={setOpenDrawer}
                         setIsAboutPage={setIsAboutPage}
                         reloadRequired={reloadRequired}
-                        setReloadRequired = {setReloadRequired}
+                        setReloadRequired = {() => {}}
                     />
                     <Content
                         height={100 - navBarHeight}

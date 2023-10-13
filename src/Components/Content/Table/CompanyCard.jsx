@@ -176,6 +176,7 @@ export default function CompanyCard({
             spreadsheet.openFromJson({ file: jsonObj });
             protectUnmarkedCells(spreadsheet);
         }
+        setYahooCompanyName(companyName)
         updateStockValues();
         updateStockChartValues();
     }, [companyName, jsonFile, ticker]);
