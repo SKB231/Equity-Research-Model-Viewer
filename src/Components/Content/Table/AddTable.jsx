@@ -1,47 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { createCompany } from "../../API/DatabaseAPI";
 import SimpleMDE from "react-simplemde-editor";
-import {
-    InputLabel,
-    Input,
-    FormControl,
-    FormHelperText,
-    Stack,
-    Paper,
-} from "@mui/material";
+import { InputLabel, FormControl, Stack } from "@mui/material";
 import { Button, TextField, Box } from "@mui/material";
 import { MenuItem, Select } from "@mui/material";
-import {
-    SpreadsheetComponent,
-    SheetsDirective,
-    RangeDirective,
-    RangesDirective,
-    SheetDirective,
-} from "@syncfusion/ej2-react-spreadsheet";
-import { Workbook } from "@syncfusion/ej2-react-spreadsheet";
-import { isLocked } from "@syncfusion/ej2-react-spreadsheet";
-import data from "./test";
-import { getAllCellsWithColor } from "./Utility/tableProcessor";
+import { SpreadsheetComponent } from "@syncfusion/ej2-react-spreadsheet";
 import { getCompanyCurrentStock } from "../../API/StockDataAPI";
-import { Checkbox } from "@mui/material";
 import TableInput from "./TableInput";
 
-export default function AddTable() {
+export default function AddTable({
+    editPage,
+    jsonFile,
+    name,
+    ticker,
+    type,
+    recentWebcast,
+    companyInformation,
+    keyComments,
+    linkToSlide,
+    table,
+    setCurrentContent,
+    setReloadRequired,
+}) {
     const spreadsheetRef = useRef(null);
     const [formValues, setFormValues] = useState({
         companyName: "",
@@ -128,10 +110,10 @@ export default function AddTable() {
             getCompanyCurrentStock({
                 symbol: value,
             }).then((data) => {
-                if (data == 1) {
-                    setStockSymbolValid(false);
-                } else {
+                if (data != 1) {
                     setStockSymbolValid(true);
+                } else {
+                    setStockSymbolValid(false);
                 }
                 setUpdatingStockVal(false);
             });
@@ -143,10 +125,42 @@ export default function AddTable() {
         }));
     };
 
+    useEffect(() => {
+        if (editPage) {
+            if (ticker == "") {
+                console.log("No Ticker given. Heading back to view state.");
+                setCurrentContent("VIEW_PAGE");
+            }
+            setCompany();
+        }
+    }, []);
     // Function to handle change in file.
     const handleFileChange = (event) => {
         const file = event.target.files?.[0];
         setFile(file);
+    };
+
+    const setCompany = () => {
+        console.log("type is ", type);
+        const newFormValues = {
+            companyName: name,
+            ticker: ticker,
+            category: type,
+            recentWebcast: recentWebcast,
+            companyInformation: companyInformation,
+            keyComments: keyComments,
+            linkToSlide: linkToSlide,
+        };
+        setTable(JSON.parse(table));
+        const spreadsheet = spreadsheetRef.current;
+        const jsonObj = JSON.parse(jsonFile);
+        if (jsonObj && spreadsheet) {
+            if (!jsonObj) {
+                return;
+            }
+            spreadsheet.openFromJson({ file: jsonObj });
+        }
+        setFormValues(newFormValues);
     };
 
     const getCompany = async () => {
@@ -164,22 +178,25 @@ export default function AddTable() {
             table: stringTableJson,
         };
     };
-
     // Function to submit the form and call the API.
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const newCompany = await getCompany();
+        if (!stockSymbolValid) {
+            const finalStr = `Stock symbol ${formValues.ticker}, may not be valid for ${formValues.companyName}. Please delete the page if this is the case since the symbol is mapped to the final page.`;
+            alert(finalStr);
+        }
 
+        const newCompany = await getCompany();
         const resp = await createCompany(newCompany);
         if (resp == 0) {
-
+            setReloadRequired(true);
+            window.location.reload();
         } else {
             alert(
                 "Some error occured while submitting the information. Please try submitting again!"
             );
         }
     };
-
     return (
         <Card
             sx={{
@@ -193,7 +210,9 @@ export default function AddTable() {
             <Box sx={{ margin: "1rem", width: "85%", minWidth: "600px" }}>
                 <Box>
                     <h1>
-                        <h1>Add New Company</h1>
+                        <h1>
+                            {!editPage ? "Add new Company" : "Edit company"}
+                        </h1>
                     </h1>
                 </Box>
                 <form onSubmit={handleSubmit}>
@@ -222,21 +241,17 @@ export default function AddTable() {
                                     color: "inherit",
                                 }}
                             >
-                                <InputLabel
-                                    id="option-label"
-                                    sx={{
-                                        bgcolor: "inherit",
-                                        color: "inherit",
-                                    }}
-                                >
+                                <InputLabel id="option-label">
                                     Select Company Type
                                 </InputLabel>
                                 <Select
+                                    label="Select Company Type"
                                     name="category"
                                     labelId="option-label"
                                     placeholder="Company Type"
                                     onChange={handleChange}
                                     sx={{ color: "inherit" }}
+                                    value={formValues.category}
                                 >
                                     <MenuItem value="Airlines">
                                         Airlines
@@ -271,6 +286,7 @@ export default function AddTable() {
                                         ? "success"
                                         : "primary"
                                 }
+                                value={formValues.ticker}
                             ></TextField>
                         </Stack>
                         <TextField
@@ -280,6 +296,7 @@ export default function AddTable() {
                             onChange={handleChange}
                             multiline
                             minRows={2}
+                            value={formValues.companyInformation}
                         ></TextField>
                         <Button variant="contained" component="label">
                             Upload File
@@ -336,6 +353,7 @@ export default function AddTable() {
                             sx={{ width: "100%" }}
                             label="Most Recent Webcast"
                             onChange={handleChange}
+                            value={formValues.recentWebcast}
                         ></TextField>
                         <Box
                             sx={{
@@ -354,6 +372,7 @@ export default function AddTable() {
                             sx={{ width: "100%" }}
                             label="Investor Overview PDF link"
                             onChange={handleChange}
+                            value={formValues.linkToSlide}
                         ></TextField>
                         <Box
                             sx={{
@@ -368,7 +387,10 @@ export default function AddTable() {
                         </Box>{" "}
                         <Box sx={{ margin: "2rem", width: "100%" }}>
                             <h4>KEY COMMENTS</h4>
-                            <SimpleMDE onChange={handleKeyComments} />
+                            <SimpleMDE
+                                value={formValues.keyComments}
+                                onChange={handleKeyComments}
+                            />
                         </Box>
                         <Button
                             variant="contained"

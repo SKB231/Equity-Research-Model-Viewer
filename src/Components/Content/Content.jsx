@@ -5,17 +5,17 @@ import { useState } from "react";
 import About from "./About";
 const Content = ({
     height,
-    selectedAddTable,
     selectedCompany,
     companyId,
-    isAboutPage,
+    setCurrentContent,
+    currentContent,
+    setReloadRequired,
 }) => {
-    console.log(companyId)
+    console.log("TYPE IS ", selectedCompany?.companyType);
     return (
         <div
             flex={10}
             sx={{
-                // overflow: "hidden",
                 maxHeight: `${height}vh`,
                 minHeight: `${height}vh`,
                 width: "100%",
@@ -26,9 +26,31 @@ const Content = ({
                 justifyContent: "center",
             }}
         >
-            {isAboutPage && <About />}
-            {!isAboutPage && selectedAddTable && <AddTable />}
-            {!isAboutPage && !selectedAddTable && (
+            {currentContent === "ABOUT" && <About />}
+            {currentContent === "ADD_PAGE" && (
+                <AddTable
+                    editPage={false}
+                    setReloadRequired={setReloadRequired}
+                />
+            )}
+            {currentContent === "EDIT_PAGE" && (
+                <AddTable
+                    editPage={true}
+                    setCurrentContent={setCurrentContent}
+                    ticker={selectedCompany?.ticker}
+                    name={selectedCompany?.name}
+                    jsonFile={selectedCompany?.jsonFile}
+                    companyInformation={selectedCompany?.companyInformation}
+                    displayWebcast={selectedCompany?.displayWebcast}
+                    recentWebcast={selectedCompany?.recentWebcast}
+                    keyComments={selectedCompany?.keyComments}
+                    linkToSlide={selectedCompany?.linkToSlide}
+                    type={selectedCompany?.type}
+                    table={selectedCompany?.table}
+                    setReloadRequired={setReloadRequired}
+                />
+            )}
+            {currentContent === "VIEW_PAGE" && (
                 <CompanyCard
                     companyId={companyId}
                     companyName={selectedCompany?.name}
@@ -39,7 +61,8 @@ const Content = ({
                     recentWebcast={selectedCompany?.recentWebcast}
                     keyComments={selectedCompany?.keyComments}
                     linkToSlide={selectedCompany?.linkToSlide}
-                    table={selectedCompany.table}
+                    table={selectedCompany?.table}
+                    setCurrentContent={setCurrentContent}
                 />
             )}
         </div>

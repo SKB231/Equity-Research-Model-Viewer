@@ -22,6 +22,7 @@ export default function NavigationPane({
     setIsAboutPage,
     reloadRequired,
     setReloadRequired,
+    setCurrentContent,
 }) {
     let [companies, setCompanies] = useState({
         Airlines: [],
@@ -67,7 +68,7 @@ export default function NavigationPane({
         };
 
         getCompanies();
-    }, []);
+    }, [reloadRequired]);
     return (
         <SwipeableDrawer
             open={openDrawer}
@@ -94,8 +95,7 @@ export default function NavigationPane({
                 <ListItemButton
                     sx={{ justifyContent: "space-around" }}
                     onClick={() => {
-                        setIsAboutPage(true);
-                        setOpenDrawer(false);
+                        setCurrentContent("ABOUT");
                     }}
                 >
                     <ListItemIcon sx={{ justifyContent: "center" }}>
@@ -103,15 +103,12 @@ export default function NavigationPane({
                     </ListItemIcon>
                     <ListItem sx={{ textAlign: "left" }}>About</ListItem>
                 </ListItemButton>
+
                 <ListItemButton
                     sx={{ justifyContent: "space-around" }}
                     onClick={() => {
-                        setIsAboutPage(false);
-                        setStateVal({
-                            showAddTable: true,
-                            selectedCompany: null,
-                        });
                         setOpenDrawer(false);
+                        setCurrentContent("ADD_PAGE");
                     }}
                 >
                     <ListItemIcon sx={{ justifyContent: "center" }}>
@@ -153,7 +150,9 @@ export default function NavigationPane({
                                                     handleCompanySelection(
                                                         item[1]
                                                     );
-                                                    setIsAboutPage(false);
+                                                    setCurrentContent(
+                                                        "VIEW_PAGE"
+                                                    );
                                                     setOpenDrawer(false);
                                                 }}
                                             >

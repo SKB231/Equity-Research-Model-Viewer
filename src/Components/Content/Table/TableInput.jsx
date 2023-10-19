@@ -53,6 +53,7 @@ export default function TableInput({ tab, setTable }) {
             </Button>
             {tab &&
                 tab.map((row, index) => {
+                    console.log(row, index);
                     return (
                         <Box sx={{ borderBottom: "10px", width: "50%" }}>
                             <TextField
@@ -66,6 +67,7 @@ export default function TableInput({ tab, setTable }) {
                                         return [...prevTable];
                                     });
                                 }}
+                                value={row[0]}
                             >
                                 {row[0]}
                             </TextField>
@@ -81,6 +83,7 @@ export default function TableInput({ tab, setTable }) {
                                         return [...prevTable];
                                     });
                                 }}
+                                value={row[1]}
                             >
                                 {row[1]}
                             </TextField>

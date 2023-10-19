@@ -29,6 +29,7 @@ export default function CompanyCard({
     keyComments,
     linkToSlide,
     table,
+    setCurrentContent,
 }) {
     const spreadsheetRef = useRef(null);
     const [stockInfo, setStockInfo] = useState({
@@ -37,7 +38,7 @@ export default function CompanyCard({
     });
 
     const [delCompanyWarn, setDelCompanyWarn] = useState(false);
-
+    const [editCompanyWarn, setEditCompanyWarn] = useState(false);
     const [deletionInProcess, setDeletionInProcess] = useState(false);
 
     const [stockChartData, setStockChartData] = useState({
@@ -104,21 +105,6 @@ export default function CompanyCard({
         };
         const data = await getCompanyStock(bodyObj);
 
-        /**
-         * Element from:
-         * "date": 1691692200,
-            "open": 44.6,
-            "high": 44.69,
-            "low": 44.1,
-            "close": 44.17,
-            "adjClose": 44.17,
-            "volume": 5485300
-         *   to
-            {
-                x: (date*1000),
-                y: [open, high,low, close]
-            }
-         */
         let chartData = [];
 
         if (data && data.response && data.response.length > 0) {
@@ -176,7 +162,7 @@ export default function CompanyCard({
             spreadsheet.openFromJson({ file: jsonObj });
             protectUnmarkedCells(spreadsheet);
         }
-        setYahooCompanyName(companyName)
+        setYahooCompanyName(companyName);
         updateStockValues();
         updateStockChartValues();
     }, [companyName, jsonFile, ticker]);
@@ -184,6 +170,11 @@ export default function CompanyCard({
     const handleCompanyDeletion = () => {
         setDelCompanyWarn(true);
     };
+
+    const handleCompanyEdit = () => {
+        setEditCompanyWarn(true);
+    };
+
     const deleteCompany = async () => {
         deleteCompanyFromId(companyId)
             .then((response) => {
@@ -215,7 +206,7 @@ export default function CompanyCard({
                         position: "fixed",
                         height: "100vh",
                         width: "100%",
-                        background: "rgba(0,48,87,0.6)",
+                        background: "rgba(200,48,87,0.9)",
                         zIndex: 10000,
                         top: "0px",
                         display: "flex",
@@ -248,9 +239,55 @@ export default function CompanyCard({
                     </Box>
                 </Box>
             )}
+
+            {editCompanyWarn && (
+                <Box
+                    sx={{
+                        position: "fixed",
+                        height: "100vh",
+                        width: "100%",
+                        background: "rgba(0,48,87,0.9)",
+                        zIndex: 10000,
+                        top: "0px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <h2>
+                        Please edit the components in the next page and click
+                        'ADD TABLE' again to overwrite your table, until then
+                        your changes won't be saved!
+                    </h2>
+                    <Box>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            sx={{ margin: "1rem" }}
+                            onClick={() => {
+                                setEditCompanyWarn(false);
+                                setCurrentContent("EDIT_PAGE");
+                            }}
+                        >
+                            Yup, got it!
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="info"
+                            sx={{ margin: "1rem" }}
+                            onClick={() => {
+                                setEditCompanyWarn(false);
+                            }}
+                        >
+                            NO
+                        </Button>
+                    </Box>
+                </Box>
+            )}
             <Box
                 sx={{
-                    width: "75%",
+                    width: "85%",
                     margin: "1rem",
                 }}
             >
@@ -258,9 +295,24 @@ export default function CompanyCard({
                     variant="outlined"
                     color="error"
                     onClick={handleCompanyDeletion}
+                    sx={{
+                        margin: "0.5rem",
+                    }}
                 >
                     DELETE
                 </Button>
+
+                <Button
+                    variant="outlined"
+                    color="warning"
+                    onClick={handleCompanyEdit}
+                    sx={{
+                        margin: "0.5rem",
+                    }}
+                >
+                    EDIT
+                </Button>
+
                 <Box
                     sx={{
                         margin: "1rem",

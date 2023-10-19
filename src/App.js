@@ -14,6 +14,8 @@ function App() {
     const [isAboutPage, setIsAboutPage] = React.useState(false);
     const [reloadRequired, setReloadRequired] = useState(true);
 
+    const [currentContent, setCurrentContent] = useState("ADD_PAGE");
+
     const [stateVal, setStateVal] = useState({
         showAddTable: true,
         selectedCompany: null,
@@ -36,8 +38,8 @@ function App() {
             selectedCompanyId: id,
         });
     };
-
-    console.log(stateVal);
+    console.log("SELECTED COMPANY:");
+    console.log(stateVal?.selectedCompany);
     // Specifies the navBar height in 'vh' units
     const navBarHeight = 7;
     return (
@@ -78,16 +80,17 @@ function App() {
                         handleCompanySelection={handleCompanySelection}
                         openDrawer={openDrawer}
                         setOpenDrawer={setOpenDrawer}
-                        setIsAboutPage={setIsAboutPage}
                         reloadRequired={reloadRequired}
-                        setReloadRequired = {() => {}}
+                        setReloadRequired={setReloadRequired}
+                        setCurrentContent={setCurrentContent}
                     />
                     <Content
                         height={100 - navBarHeight}
-                        selectedAddTable={stateVal.showAddTable}
                         selectedCompany={stateVal.selectedCompany}
                         companyId={stateVal.selectedCompanyId}
-                        isAboutPage={isAboutPage}
+                        setCurrentContent={setCurrentContent}
+                        currentContent={currentContent}
+                        setReloadRequired={setReloadRequired}
                     />
                 </Stack>
             </Stack>
