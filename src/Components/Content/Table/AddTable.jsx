@@ -58,8 +58,8 @@ export default function AddTable({
     };
 
     const protectAllCells = async (data) => {
-        const spreadsheet = spreadsheetRef.current;
-        spreadsheet.protectSheet(0, { selectCells: true, formatCells: false });
+        // const spreadsheet = spreadsheetRef.current;
+        // spreadsheet.protectSheet(0, { selectCells: true, formatCells: false });
     };
 
     // Use Effect called when form values change.

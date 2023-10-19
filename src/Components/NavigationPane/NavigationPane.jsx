@@ -71,6 +71,9 @@ export default function NavigationPane({
     }, [reloadRequired]);
     return (
         <SwipeableDrawer
+            sx={{
+                height: "100vh",
+            }}
             open={openDrawer}
             onClose={() => {
                 setOpenDrawer(false);
@@ -87,9 +90,10 @@ export default function NavigationPane({
                     width: "200px",
                     bgcolor: "transparent",
                     "& ul": { padding: 0 },
-                    maxHeight: `${height}vh`,
                     textAlign: "left",
                     overflow: "scroll",
+                    height: "100vh",
+                    // maxHeight: `${height}vh`,
                 }}
             >
                 <ListItemButton

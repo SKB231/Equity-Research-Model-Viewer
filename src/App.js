@@ -87,7 +87,7 @@ function App() {
                     justifyContent="center"
                 >
                     <NavigationPane
-                        height={100 - navBarHeight}
+                        height={"100vh"}
                         setStateVal={setStateVal}
                         handleCompanySelection={handleCompanySelection}
                         openDrawer={openDrawer}
