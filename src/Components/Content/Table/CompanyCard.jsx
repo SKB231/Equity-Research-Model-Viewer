@@ -147,13 +147,9 @@ export default function CompanyCard({
         });
     };
 
-    const updateStockValues = async () => {
-        const { previousClose, regularMarketPrice } =
-            await getCompanyCurrentStock({ symbol: ticker });
-        setStockInfo({ previousClose, current: regularMarketPrice });
-    };
     useEffect(() => {
         let spreadsheet = spreadsheetRef.current;
+        console.log(jsonFile);
         if (jsonFile && spreadsheet) {
             let jsonObj = JSON.parse(jsonFile);
             if (!jsonObj) {
@@ -162,10 +158,22 @@ export default function CompanyCard({
             spreadsheet.openFromJson({ file: jsonObj });
             protectUnmarkedCells(spreadsheet);
         }
+
         setYahooCompanyName(companyName);
+    }, [companyName, jsonFile]);
+
+    useEffect(() => {
+        const updateStockValues = async () => {
+            const { previousClose, regularMarketPrice } =
+                await getCompanyCurrentStock({ symbol: ticker });
+            console.log(previousClose, regularMarketPrice);
+            setStockInfo({ previousClose, current: regularMarketPrice });
+        };
+
         updateStockValues();
         updateStockChartValues();
-    }, [companyName, jsonFile, ticker]);
+        console.log("Data changed! updating stock values with ", ticker);
+    }, [ticker]);
 
     const handleCompanyDeletion = () => {
         setDelCompanyWarn(true);
@@ -320,7 +328,7 @@ export default function CompanyCard({
                     }}
                 >
                     <h1>
-                        <h1>{yahooCompanyName}</h1>
+                        <h1>{companyName}</h1>
                     </h1>
                     <h2>
                         <h4 sx={{ color: grey }}>{ticker}</h4>

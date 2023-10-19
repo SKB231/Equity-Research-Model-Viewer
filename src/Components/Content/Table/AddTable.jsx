@@ -107,16 +107,17 @@ export default function AddTable({
                 setTickerHasData(false);
             }
             setUpdatingStockVal(true);
-            getCompanyCurrentStock({
-                symbol: value,
-            }).then((data) => {
-                if (data != 1) {
-                    setStockSymbolValid(true);
-                } else {
-                    setStockSymbolValid(false);
-                }
-                setUpdatingStockVal(false);
-            });
+            // TODO: Find a better way to verify stock symbol!
+            // getCompanyCurrentStock({
+            //     symbol: value,
+            // }).then((data) => {
+            //     if (data != 1) {
+            //         setStockSymbolValid(true);
+            //     } else {
+            //         setStockSymbolValid(false);
+            //     }
+            //     setUpdatingStockVal(false);
+            // });
         }
         // New form values = (Prev_Form_Values) <Union> (New Form Values)
         setFormValues((prevValues) => ({
@@ -159,6 +160,7 @@ export default function AddTable({
                 return;
             }
             spreadsheet.openFromJson({ file: jsonObj });
+            setFileJson(jsonObj);
         }
         setFormValues(newFormValues);
     };
@@ -181,11 +183,6 @@ export default function AddTable({
     // Function to submit the form and call the API.
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!stockSymbolValid) {
-            const finalStr = `Stock symbol ${formValues.ticker}, may not be valid for ${formValues.companyName}. Please delete the page if this is the case since the symbol is mapped to the final page.`;
-            alert(finalStr);
-        }
-
         const newCompany = await getCompany();
         const resp = await createCompany(newCompany);
         if (resp == 0) {
@@ -278,7 +275,7 @@ export default function AddTable({
                                 label="Enter Company Ticker"
                                 required
                                 onChange={handleChange}
-                                error={!stockSymbolValid}
+                                error={false}
                                 color={
                                     updatingStockVal
                                         ? "warning"
@@ -287,6 +284,7 @@ export default function AddTable({
                                         : "primary"
                                 }
                                 value={formValues.ticker}
+                                disabled={editPage}
                             ></TextField>
                         </Stack>
                         <TextField

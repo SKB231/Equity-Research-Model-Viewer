@@ -146,8 +146,8 @@ export default function NavigationPane({
                                             }}
                                         >
                                             <ListItemButton
-                                                onClick={() => {
-                                                    handleCompanySelection(
+                                                onClick={async () => {
+                                                    await handleCompanySelection(
                                                         item[1]
                                                     );
                                                     setCurrentContent(

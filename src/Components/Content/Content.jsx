@@ -11,7 +11,6 @@ const Content = ({
     currentContent,
     setReloadRequired,
 }) => {
-    console.log("TYPE IS ", selectedCompany?.companyType);
     return (
         <div
             flex={10}

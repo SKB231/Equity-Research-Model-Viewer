@@ -53,7 +53,6 @@ export default function TableInput({ tab, setTable }) {
             </Button>
             {tab &&
                 tab.map((row, index) => {
-                    console.log(row, index);
                     return (
                         <Box sx={{ borderBottom: "10px", width: "50%" }}>
                             <TextField

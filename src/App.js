@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Stack, Button } from "@mui/material";
+import { Paper, Stack, Button, Box, CircularProgress } from "@mui/material";
 import Content from "./Components/Content/Content";
 import NavigationPane from "./Components/NavigationPane/NavigationPane";
 import Navbar from "./Components/Navbar/Navbar";
@@ -13,33 +13,27 @@ function App() {
     const [openDrawer, setOpenDrawer] = useState(true);
     const [isAboutPage, setIsAboutPage] = React.useState(false);
     const [reloadRequired, setReloadRequired] = useState(true);
-
     const [currentContent, setCurrentContent] = useState("ADD_PAGE");
-
-    const [stateVal, setStateVal] = useState({
-        showAddTable: true,
-        selectedCompany: null,
-        selectedCompanyId: "",
-    });
-    console.log("ID: ");
-    console.log(stateVal.selectedCompanyId);
+    const [companyId, setCompanyId] = useState("");
+    const [stateVal, setStateVal] = useState(null);
     registerLicense(
         "Mgo+DSMBaFt+QHJqVk1hXk5Hd0BLVGpAblJ3T2ZQdVt5ZDU7a15RRnVfRF1iSXxQdURhUHxadQ==;Mgo+DSMBPh8sVXJ1S0R+X1pFdEBBXHxAd1p/VWJYdVt5flBPcDwsT3RfQF5jT35SdkdgWn5ceXFRQw==;ORg4AjUWIQA/Gnt2VFhiQlJPd11dXmJWd1p/THNYflR1fV9DaUwxOX1dQl9gSXhTd0VhWnxfcn1SQmU=;MjI3ODcyM0AzMjMxMmUzMDJlMzBpOExRMXhtQnBLelErS1B4RkczMVZmZCtzSkNoVHBhbmtmWmtreWpQOUlrPQ==;MjI3ODcyNEAzMjMxMmUzMDJlMzBZSzV6ajllZTAxSDNlTkJKeXpZSGhhL0tjNkQ1V0Y0eVZZNTRvWjdYWXJrPQ==;NRAiBiAaIQQuGjN/V0d+Xk9HfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hSn5VdkRjW3xdcXdVQGhZ;MjI3ODcyNkAzMjMxMmUzMDJlMzBEaEwyQnY3RUQwQWg4bTByZWUvVEt6eWkyZ1haem9pcC9zbmRCbWxIa2xjPQ==;MjI3ODcyN0AzMjMxMmUzMDJlMzBVZ1lHMTVrK3d6RFFHWUFoN3JRbTBUMStGdkFDMnpDdmJHRVgxS3BIMFlRPQ==;Mgo+DSMBMAY9C3t2VFhiQlJPd11dXmJWd1p/THNYflR1fV9DaUwxOX1dQl9gSXhTd0VhWnxfc3VSR2A=;MjI3ODcyOUAzMjMxMmUzMDJlMzBvR0Y4QTFZeUZuMFhhRnJsaFY5dWlVbE95L2ZQb3FITTlpN1NoUGFnQS9vPQ==;MjI3ODczMEAzMjMxMmUzMDJlMzBvYTlXY2VtalROV01jSkhRcDNtQkp4NVdSWXdLOXBqTkt6a0VrbmR5ZHFRPQ==;MjI3ODczMUAzMjMxMmUzMDJlMzBEaEwyQnY3RUQwQWg4bTByZWUvVEt6eWkyZ1haem9pcC9zbmRCbWxIa2xjPQ=="
     );
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleCompanySelection = async (id) => {
+        console.log("Loading Data...");
+        setIsLoading(true);
         const fetchResp = await fetch(
             `https://${prefix}/firebase/getCompanyFromId/` + id
         );
         const data = await fetchResp.json();
-        setStateVal({
-            showAddTable: false,
-            selectedCompany: data,
-            selectedCompanyId: id,
-        });
+        setIsLoading(false);
+        setStateVal(data);
+        setCompanyId(id);
     };
-    console.log("SELECTED COMPANY:");
-    console.log(stateVal?.selectedCompany);
+
     // Specifies the navBar height in 'vh' units
     const navBarHeight = 7;
     return (
@@ -53,6 +47,24 @@ function App() {
                 justifyContent: "center",
             }}
         >
+            {isLoading && (
+                <Box
+                    sx={{
+                        position: "fixed",
+                        height: "100vh",
+                        width: "100%",
+                        background: "rgba(0,48,87,0.9)",
+                        zIndex: 10000,
+                        top: "0px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <CircularProgress />
+                </Box>
+            )}
             <Stack
                 height={"100%"}
                 sx={{
@@ -86,8 +98,8 @@ function App() {
                     />
                     <Content
                         height={100 - navBarHeight}
-                        selectedCompany={stateVal.selectedCompany}
-                        companyId={stateVal.selectedCompanyId}
+                        selectedCompany={stateVal}
+                        companyId={companyId}
                         setCurrentContent={setCurrentContent}
                         currentContent={currentContent}
                         setReloadRequired={setReloadRequired}
