@@ -46,6 +46,7 @@ export default function NavigationPane({
                 }
             );
             const newCompanies = await fetchResponse.json();
+            console.log(newCompanies)
             let tempData = {
                 Airlines: [],
                 Package: [],
@@ -69,6 +70,8 @@ export default function NavigationPane({
 
         getCompanies();
     }, [reloadRequired]);
+
+    console.log(companies);
     return (
         <SwipeableDrawer
             sx={{
